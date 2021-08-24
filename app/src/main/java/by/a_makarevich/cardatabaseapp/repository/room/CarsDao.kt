@@ -10,8 +10,8 @@ interface CarsDao {
     fun getAll(): Flow<List<Car>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun add(car: Car)
+    suspend fun add(car: Car)
 
     @Delete
-    fun delete(car: Car)
+    suspend fun delete(car: Car)
 }
