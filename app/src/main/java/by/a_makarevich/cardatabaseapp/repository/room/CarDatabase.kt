@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [Car::class], version = 1)
-abstract class CarDatabase: RoomDatabase(){
+abstract class CarDatabase : RoomDatabase() {
     abstract val carDao: CarsDao
 
     companion object {
@@ -14,7 +14,7 @@ abstract class CarDatabase: RoomDatabase(){
             context,
             CarDatabase::class.java,
             "cars-database"
-        )
+        ).build()
     }
 
 }

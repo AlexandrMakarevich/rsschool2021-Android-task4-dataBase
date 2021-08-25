@@ -1,7 +1,7 @@
 package by.a_makarevich.cardatabaseapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import by.a_makarevich.cardatabaseapp.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
