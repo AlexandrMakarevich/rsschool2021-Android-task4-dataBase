@@ -12,7 +12,14 @@ import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
-    val repository: Repository by locateLazy()
+    /*  private val _runningFragment = MutableLiveData<RunningFragment>(RunningFragment.MainFragment)
+      val runningFragment: LiveData<RunningFragment> = _runningFragment
+
+      fun setRunningFragment(fragment: RunningFragment){
+          _runningFragment.value = fragment
+      }*/
+
+    private val repository: Repository by locateLazy()
 
     val cars = repository.getAll().asLiveDataFlow()
 
@@ -24,11 +31,23 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch { repository.delete(car) }
     }
 
+    fun update(car: Car) {
+        viewModelScope.launch { repository.update(car) }
+    }
+
+    suspend fun getCar(id: Int): Car {
+        return repository.getCar(id)
+    }
+
     private fun createCar(car: Car) = Car(
         model = car.model,
-        year = car.year
+        year = car.year,
+        color = car.color
     )
 
     fun <T> Flow<T>.asLiveDataFlow() = shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
+
 }
+
+

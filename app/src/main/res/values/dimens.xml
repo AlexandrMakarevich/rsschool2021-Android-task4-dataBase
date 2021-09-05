@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="minHeightEditText">36dp</dimen>
+    <dimen name="content_margin">8dp</dimen>
+    <dimen name="fieldMargin">2dp</dimen>
+</resources>

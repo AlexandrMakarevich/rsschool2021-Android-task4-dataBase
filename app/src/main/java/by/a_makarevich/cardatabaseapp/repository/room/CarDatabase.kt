@@ -13,7 +13,7 @@ abstract class CarDatabase : RoomDatabase() {
         fun create(context: Context) = Room.databaseBuilder(
             context,
             CarDatabase::class.java,
-            "cars-database"
+            "cars"
         ).build()
     }
 

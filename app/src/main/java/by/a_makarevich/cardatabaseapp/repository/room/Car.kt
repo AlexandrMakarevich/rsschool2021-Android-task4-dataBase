@@ -9,6 +9,7 @@ data class Car(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val model: String,
-    val year: String
+    val year: String,
+    val color: String
 )
 

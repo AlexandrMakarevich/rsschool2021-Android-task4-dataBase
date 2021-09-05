@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CarDataBaseApp</string>
+    <string name="model">TYPE MODEL HERE</string>
+    <string name="year">TYPE YEAR HERE</string>
+    <string name="color">TYPE COLOR HERE</string>
+    <string name="add">ADD</string>
 </resources>

@@ -11,4 +11,7 @@ class Repository (private val db: CarDatabase) {
     fun getAll(): Flow<List<Car>> = dao.getAll()
     suspend fun save (car: Car) = dao.add(car)
     suspend fun delete(car: Car) = dao.delete(car)
+    suspend fun update(car: Car) = dao.update(car)
+    suspend fun getCar(id: Int) = dao.getCar(id)
+
 }
