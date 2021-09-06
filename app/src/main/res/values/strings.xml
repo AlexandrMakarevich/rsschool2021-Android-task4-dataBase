@@ -4,4 +4,6 @@
     <string name="year">TYPE YEAR HERE</string>
     <string name="color">TYPE COLOR HERE</string>
     <string name="add">ADD</string>
+    <string name="enter_sort_by">Sort by</string>
+    <string name="sortList">sort_list</string>
 </resources>

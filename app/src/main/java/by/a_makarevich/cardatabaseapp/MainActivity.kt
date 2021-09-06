@@ -2,6 +2,9 @@ package by.a_makarevich.cardatabaseapp
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import by.a_makarevich.cardatabaseapp.repository.room.Car
@@ -9,7 +12,7 @@ import by.a_makarevich.cardatabaseapp.ui.Router
 import by.a_makarevich.cardatabaseapp.ui.add.AddFragment
 import by.a_makarevich.cardatabaseapp.ui.main.CarClickedListener
 import by.a_makarevich.cardatabaseapp.ui.main.MainFragment
-import by.a_makarevich.cardatabaseapp.ui.main.adapter.CarViewHolder
+import by.a_makarevich.cardatabaseapp.ui.pref.PreferenceFragment
 
 class MainActivity : AppCompatActivity(), Router, CarClickedListener {
 
@@ -27,9 +30,10 @@ class MainActivity : AppCompatActivity(), Router, CarClickedListener {
     }
 
     override fun openMainFragment() {
-        openFragment(MainFragment(this))
         runningFragment = RunningFragment.MainFragment
         title = "CARS"
+        invalidateOptionsMenu()
+        openFragment(MainFragment(this))
     }
 
     override fun openAddFragment(id: Int, model: String, color: String, year: String) {
@@ -42,11 +46,17 @@ class MainActivity : AppCompatActivity(), Router, CarClickedListener {
         fragment.arguments = args
         openFragment(fragment)
         runningFragment = RunningFragment.AddFragment
-        title = "ADD NEW CAR"
+        title = if (model == "")
+            "ADD NEW CAR"
+        else "UPDATE CAR"
+        invalidateOptionsMenu()
     }
 
     override fun openPreferenceFragment() {
-        TODO("Not yet implemented")
+        runningFragment = RunningFragment.PreferenceFragment
+        title = "OPTIONS"
+        invalidateOptionsMenu()
+        openFragment(PreferenceFragment())
     }
 
     private fun openFragment(fragment: Fragment) {
@@ -56,22 +66,42 @@ class MainActivity : AppCompatActivity(), Router, CarClickedListener {
     }
 
     override fun onBackPressed() {
-        if (runningFragment == RunningFragment.AddFragment) openMainFragment()
+        if (runningFragment == RunningFragment.AddFragment || runningFragment == RunningFragment.PreferenceFragment) openMainFragment()
         else super.onBackPressed()
-
     }
 
     override fun onCarClicked(car: Car) {
-        Log.d("MyLog",  "${car.color}")
+        Log.d("MyLog", "${car.color}")
         openAddFragment(car.id, car.model, car.color, car.year)
     }
-companion object{
-    const val ID = "id"
-    const val MODEL = "model"
-    const val COLOR = "color"
-    const val YEAR = "year"
-}
 
+    companion object {
+        const val ID = "id"
+        const val MODEL = "model"
+        const val COLOR = "color"
+        const val YEAR = "year"
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        when (runningFragment) {
+            RunningFragment.MainFragment -> menu?.findItem(R.id.menu_filter)?.isVisible = true
+            else -> menu?.findItem(R.id.menu_filter)?.isVisible = false
+        }
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_filter -> openPreferenceFragment()
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }
 
 sealed class RunningFragment {

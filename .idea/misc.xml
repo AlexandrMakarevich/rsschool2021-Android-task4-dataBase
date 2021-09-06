@@ -5,11 +5,14 @@
       <map>
         <entry key="..\:/WORK/AndroidStudio/RsSchool2021Task4Database/app/src/main/res/layout/add_fragment.xml" value="0.22870370370370371" />
         <entry key="..\:/WORK/AndroidStudio/RsSchool2021Task4Database/app/src/main/res/layout/car_list_item.xml" value="0.4" />
+        <entry key="..\:/WORK/AndroidStudio/RsSchool2021Task4Database/app/src/main/res/layout/main_activity.xml" value="0.16041666666666668" />
         <entry key="..\:/WORK/AndroidStudio/RsSchool2021Task4Database/app/src/main/res/layout/main_fragment.xml" value="0.22870370370370371" />
+        <entry key="..\:/WORK/AndroidStudio/RsSchool2021Task4Database/app/src/main/res/menu/menu.xml" value="0.259375" />
+        <entry key="..\:/WORK/AndroidStudio/RsSchool2021Task4Database/app/src/main/res/xml/preference.xml" value="0.259375" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

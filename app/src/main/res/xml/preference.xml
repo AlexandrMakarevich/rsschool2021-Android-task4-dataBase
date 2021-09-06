@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        android:dialogTitle="@string/enter_sort_by"
+        android:entries="@array/sort_by"
+        android:entryValues="@array/sort_by"
+        android:icon="@drawable/ic_baseline_filter_alt_24"
+        android:key="@string/sortList"
+        android:title="Sorted by:"
+        app:useSimpleSummaryProvider="true" />
+
+</PreferenceScreen>

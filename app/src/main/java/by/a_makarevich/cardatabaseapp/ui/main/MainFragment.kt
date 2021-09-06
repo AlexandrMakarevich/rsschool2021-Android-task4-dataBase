@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
+import by.a_makarevich.cardatabaseapp.R
 import by.a_makarevich.cardatabaseapp.databinding.MainFragmentBinding
 import by.a_makarevich.cardatabaseapp.repository.room.Car
 import by.a_makarevich.cardatabaseapp.ui.Router
@@ -56,8 +59,28 @@ class MainFragment(private val listener: CarClickedListener) : Fragment(),
     }
 
     private fun renderCars(cars: List<Car>) {
-        adapter?.submitList(cars)
-        this.cars = cars
+        val pref = getDefaultSharedPreferences(context)
+
+        if (pref.contains(resources.getString(R.string.sortList))) {
+            val sort = pref.getString(resources.getString(R.string.sortList), "anything wrong")
+            when (sort) {
+                resources.getStringArray(R.array.sort_by)[0] -> {
+                    adapter?.submitList(cars.sortedBy { it.model })
+                    this.cars = cars
+                }
+                resources.getStringArray(R.array.sort_by)[1] -> {
+                    adapter?.submitList(cars.sortedBy { it.color })
+                    this.cars = cars
+                }
+                resources.getStringArray(R.array.sort_by)[2] -> {
+                    adapter?.submitList(cars.sortedBy { it.year })
+                    this.cars = cars
+                }
+            }
+        } else {
+            Log.d("MyLog", "pref has not the sort_list ")
+            return
+        }
     }
 
     override fun onDestroy() {
