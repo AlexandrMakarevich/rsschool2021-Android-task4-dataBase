@@ -108,7 +108,6 @@ class MainFragment(private val listener: CarClickedListener) : Fragment(),
         if (car != null) {
             listener.onCarClicked(car)
         } else return
-
     }
 }
 

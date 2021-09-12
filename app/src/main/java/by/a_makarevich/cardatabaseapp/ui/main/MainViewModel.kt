@@ -20,18 +20,15 @@ class MainViewModel : ViewModel() {
 
     val cars = repository.getAll().asLiveDataFlow()
 
-   fun getCarsCursor(context: Context): Flow<List<Car>> = repository.getCarsCursor(context)
-
-   /* fun getcarsCursor(context: Context): List<Car> {
-        var cars = listOf<Car>()
-        viewModelScope.launch {
-            repository.getCarsCursor(context).collect {
-                cars = it
-            }
-        }
-        return cars
-    }*/
-
+    /* fun getcarsCursor(context: Context): List<Car> {
+         var cars = listOf<Car>()
+         viewModelScope.launch {
+             repository.getCarsCursor(context).collect {
+                 cars = it
+             }
+         }
+         return cars
+     }*/
 
 
     fun save(car: Car) {
@@ -58,6 +55,17 @@ class MainViewModel : ViewModel() {
 
     fun <T> Flow<T>.asLiveDataFlow() = shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
+    //========================================= Cursor Below
+
+    fun getCarsCursor(context: Context): Flow<List<Car>> = repository.getCarsCursor(context)
+
+    fun saveCarCursor(car: Car) {
+        viewModelScope.launch { repository.addCarCursor(car) }
+    }
+
+    fun updateCarCursor(car: Car) {
+        viewModelScope.launch { repository.updateCarCursor(car) }
+    }
 
 }
 
