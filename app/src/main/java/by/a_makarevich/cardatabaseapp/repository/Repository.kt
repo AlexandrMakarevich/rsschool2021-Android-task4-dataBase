@@ -34,5 +34,10 @@ class Repository(private val db: CarDatabase) {
     suspend fun updateCarCursor(car: Car) {
         this.carsSqlOpenHelper?.updateCar(car)
     }
+
+    suspend fun deleteCarCursor(car: Car) {
+        this.carsSqlOpenHelper?.deleteCar(car)
+    }
+
 }
 

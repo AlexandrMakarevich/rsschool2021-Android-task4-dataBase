@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
+import androidx.recyclerview.widget.RecyclerView
 import by.a_makarevich.cardatabaseapp.R
 import by.a_makarevich.cardatabaseapp.databinding.MainFragmentBinding
 import by.a_makarevich.cardatabaseapp.repository.room.Car
@@ -47,7 +48,8 @@ class MainFragment(private val listener: CarClickedListener) : Fragment(),
         binding?.apply {
 
             carList.adapter = CarListAdapter(this@MainFragment)
-            SwipeHelper(viewModel::delete).attachToRecyclerView(carList)
+
+            deleteSwiper(carList)
 
             addFab.setOnClickListener {
                 parentRouter?.openAddFragment(-1, "", "", "")
@@ -62,11 +64,11 @@ class MainFragment(private val listener: CarClickedListener) : Fragment(),
             }
             resources.getStringArray(R.array.data_source)[1] -> {         //SQLite
                 viewModel.getCarsCursor(requireContext()).onEach(::renderCars).launchIn(lifecycleScope)
-                //adapter?.submitList(cars)
             }
         }
 
     }
+
 
     private fun renderCars(cars: List<Car>) {
         val pref = getDefaultSharedPreferences(context)
@@ -108,6 +110,22 @@ class MainFragment(private val listener: CarClickedListener) : Fragment(),
         if (car != null) {
             listener.onCarClicked(car)
         } else return
+    }
+
+
+    private fun deleteSwiper(carList: RecyclerView) {
+
+
+        when (getDefaultSharedPreferences(requireContext())
+            .getString(resources.getString(R.string.data_source), "")) {
+
+            resources.getStringArray(R.array.data_source)[0] -> {         //ROOM
+                SwipeHelper(viewModel::delete).attachToRecyclerView(carList)
+            }
+            resources.getStringArray(R.array.data_source)[1] -> {         //SQLite
+                SwipeHelper(viewModel::deleteCarCursor).attachToRecyclerView(carList)
+            }
+        }
     }
 }
 

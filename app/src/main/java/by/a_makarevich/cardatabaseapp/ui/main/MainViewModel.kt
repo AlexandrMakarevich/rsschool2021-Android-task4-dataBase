@@ -67,6 +67,10 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch { repository.updateCarCursor(car) }
     }
 
+    fun deleteCarCursor(car: Car) {
+        viewModelScope.launch { repository.deleteCarCursor(car) }
+    }
+
 }
 
 

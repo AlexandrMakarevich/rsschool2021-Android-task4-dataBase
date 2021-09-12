@@ -69,7 +69,8 @@ class CarSQLiteOpenHelper(context: Context) : SQLiteOpenHelper(
     }
 
     suspend fun deleteCar(car: Car) {
-
+        val where = "id=${car.id}"
+        this.readableDatabase.delete("cars", where, null)
     }
 
 }
