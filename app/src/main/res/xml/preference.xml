@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
+        android:defaultValue="Model"
         android:dialogTitle="@string/enter_sort_by"
         android:entries="@array/sort_by"
         android:entryValues="@array/sort_by"
@@ -10,5 +11,16 @@
         android:key="@string/sortList"
         android:title="Sorted by:"
         app:useSimpleSummaryProvider="true" />
+
+    <ListPreference
+        android:defaultValue="Room"
+        android:dialogTitle="@string/data_source"
+        android:entries="@array/data_source"
+        android:entryValues="@array/data_source"
+        android:icon="@drawable/ic_baseline_house_siding_24"
+        android:key="@string/data_source"
+        android:title="DataSource"
+        app:useSimpleSummaryProvider="true" />
+
 
 </PreferenceScreen>

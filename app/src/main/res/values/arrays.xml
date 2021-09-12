@@ -5,4 +5,10 @@
         <item>Color</item>
         <item>Year</item>
     </string-array>
+
+    <string-array name="data_source">
+        <item>Room</item>
+        <item>Cursor</item>
+    </string-array>
+
 </resources>

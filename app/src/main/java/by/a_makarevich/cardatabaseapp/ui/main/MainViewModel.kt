@@ -1,27 +1,38 @@
 package by.a_makarevich.cardatabaseapp.ui.main
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.a_makarevich.cardatabaseapp.locateLazy
 import by.a_makarevich.cardatabaseapp.repository.Repository
+import by.a_makarevich.cardatabaseapp.repository.cursor.CarSQLiteOpenHelper
 import by.a_makarevich.cardatabaseapp.repository.room.Car
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
-    /*  private val _runningFragment = MutableLiveData<RunningFragment>(RunningFragment.MainFragment)
-      val runningFragment: LiveData<RunningFragment> = _runningFragment
-
-      fun setRunningFragment(fragment: RunningFragment){
-          _runningFragment.value = fragment
-      }*/
 
     private val repository: Repository by locateLazy()
 
     val cars = repository.getAll().asLiveDataFlow()
+
+   fun getCarsCursor(context: Context): Flow<List<Car>> = repository.getCarsCursor(context)
+
+   /* fun getcarsCursor(context: Context): List<Car> {
+        var cars = listOf<Car>()
+        viewModelScope.launch {
+            repository.getCarsCursor(context).collect {
+                cars = it
+            }
+        }
+        return cars
+    }*/
+
+
 
     fun save(car: Car) {
         viewModelScope.launch { repository.save(createCar(car)) }

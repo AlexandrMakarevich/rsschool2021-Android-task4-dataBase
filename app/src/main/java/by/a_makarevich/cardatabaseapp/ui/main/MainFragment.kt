@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.PreferenceManager
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import by.a_makarevich.cardatabaseapp.R
 import by.a_makarevich.cardatabaseapp.databinding.MainFragmentBinding
@@ -23,9 +22,9 @@ import kotlinx.coroutines.flow.onEach
 class MainFragment(private val listener: CarClickedListener) : Fragment(),
     CarViewHolder.CarViewListener {
 
-    /* companion object {
-         fun newInstance() = MainFragment()
-     }*/
+    /*companion object {
+        fun newInstance() = MainFragment
+    }*/
 
     private var cars = listOf<Car>()
 
@@ -55,7 +54,18 @@ class MainFragment(private val listener: CarClickedListener) : Fragment(),
             }
         }
 
-        viewModel.cars.onEach(::renderCars).launchIn(lifecycleScope)
+        when (getDefaultSharedPreferences(requireContext())
+            .getString(resources.getString(R.string.data_source), "")) {
+
+            resources.getStringArray(R.array.data_source)[0] -> {         //ROOM
+                viewModel.cars.onEach(::renderCars).launchIn(lifecycleScope)
+            }
+            resources.getStringArray(R.array.data_source)[1] -> {         //SQLite
+                viewModel.getCarsCursor(requireContext()).onEach(::renderCars).launchIn(lifecycleScope)
+                //adapter?.submitList(cars)
+            }
+        }
+
     }
 
     private fun renderCars(cars: List<Car>) {
@@ -78,9 +88,12 @@ class MainFragment(private val listener: CarClickedListener) : Fragment(),
                 }
             }
         } else {
+            adapter?.submitList(cars.sortedBy { it.model })
+            this.cars = cars
             Log.d("MyLog", "pref has not the sort_list ")
             return
         }
+        // Log.d("MyLog", pref.getString(resources.getString(R.string.data_source), "data_source is empty").toString())
     }
 
     override fun onDestroy() {

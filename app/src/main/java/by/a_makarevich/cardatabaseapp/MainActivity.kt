@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import by.a_makarevich.cardatabaseapp.repository.room.Car
 import by.a_makarevich.cardatabaseapp.ui.Router
 import by.a_makarevich.cardatabaseapp.ui.add.AddFragment
@@ -21,7 +22,11 @@ class MainActivity : AppCompatActivity(), Router, CarClickedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-        title = "CARS"
+
+        title = "CARS ${
+            PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(resources.getString(R.string.data_source), "ROOM")}"
+
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, MainFragment(this))
@@ -31,7 +36,9 @@ class MainActivity : AppCompatActivity(), Router, CarClickedListener {
 
     override fun openMainFragment() {
         runningFragment = RunningFragment.MainFragment
-        title = "CARS"
+        title = "CARS ${
+            PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(resources.getString(R.string.data_source), "ROOM")}"
         invalidateOptionsMenu()
         openFragment(MainFragment(this))
     }
@@ -71,7 +78,6 @@ class MainActivity : AppCompatActivity(), Router, CarClickedListener {
     }
 
     override fun onCarClicked(car: Car) {
-        Log.d("MyLog", "${car.color}")
         openAddFragment(car.id, car.model, car.color, car.year)
     }
 

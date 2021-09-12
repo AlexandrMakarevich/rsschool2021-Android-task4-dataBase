@@ -21,3 +21,4 @@ interface CarsDao {
     @Query("SELECT * FROM cars WHERE id = :idCar")
     suspend fun getCar(idCar: Int): Car
 }
+
