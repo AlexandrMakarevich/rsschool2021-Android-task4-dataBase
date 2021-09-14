@@ -23,14 +23,8 @@ class MainActivity : AppCompatActivity(), Router, CarClickedListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        title = "CARS ${
-            PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(resources.getString(R.string.data_source), "ROOM")}"
-
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment(this))
-                .commitNow()
+            openMainFragment()
         }
     }
 
@@ -38,9 +32,10 @@ class MainActivity : AppCompatActivity(), Router, CarClickedListener {
         runningFragment = RunningFragment.MainFragment
         title = "CARS ${
             PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(resources.getString(R.string.data_source), "ROOM")}"
+                .getString(resources.getString(R.string.data_source), "ROOM")
+        }"
         invalidateOptionsMenu()
-        openFragment(MainFragment(this))
+        openFragment(MainFragment.newInstance(this))
     }
 
     override fun openAddFragment(id: Int, model: String, color: String, year: String) {
@@ -108,6 +103,7 @@ class MainActivity : AppCompatActivity(), Router, CarClickedListener {
         }
         return super.onOptionsItemSelected(item)
     }
+
 }
 
 sealed class RunningFragment {

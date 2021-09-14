@@ -6,5 +6,8 @@ import by.a_makarevich.cardatabaseapp.repository.room.Car
 class CarDifferCallBack : DiffUtil.ItemCallback<Car>() {
     override fun areItemsTheSame(oldItem: Car, newItem: Car): Boolean = oldItem.id == newItem.id
 
-    override fun areContentsTheSame(oldItem: Car, newItem: Car): Boolean = oldItem == newItem
+    override fun areContentsTheSame(oldItem: Car, newItem: Car): Boolean {
+        return oldItem.color == newItem.color
+                && oldItem.model == newItem.model && oldItem.year == newItem.year
+    }
 }

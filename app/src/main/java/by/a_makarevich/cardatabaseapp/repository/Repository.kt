@@ -24,7 +24,7 @@ class Repository(private val db: CarDatabase) {
 
         val carsSqlOpenHelper = CarSQLiteOpenHelper(context)
         this.carsSqlOpenHelper = carsSqlOpenHelper
-        return carsSqlOpenHelper.listOfCar
+        return this.carsSqlOpenHelper!!.listOfCar
     }
 
     suspend fun addCarCursor(car: Car) {

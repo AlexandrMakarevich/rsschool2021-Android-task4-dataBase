@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
@@ -18,7 +19,6 @@ class CarSQLiteOpenHelper(context: Context) : SQLiteOpenHelper(
     1
 ) {
 
-
     override fun onCreate(p0: SQLiteDatabase?) {
         TODO("Not yet implemented")
     }
@@ -28,7 +28,11 @@ class CarSQLiteOpenHelper(context: Context) : SQLiteOpenHelper(
     }
 
     private fun getCursorWithCars(): Cursor {
-        return writableDatabase.rawQuery("SELECT * FROM cars", null)
+        return try {
+            writableDatabase.rawQuery("SELECT * FROM cars", null)
+        } catch (ex: SQLException) {
+            readableDatabase.rawQuery("SELECT * FROM cars", null)
+        }
     }
 
     @SuppressLint("Range")
@@ -43,8 +47,8 @@ class CarSQLiteOpenHelper(context: Context) : SQLiteOpenHelper(
                     val year = cursor.getString(cursor.getColumnIndex("year"))
                     val car = Car(id, "SQlite - $model", year, color)
                     cars.add(car)
-                    emit(cars)
                 } while (cursor.moveToNext())
+                emit(cars)
             }
             cursor.close()
         }
@@ -55,7 +59,7 @@ class CarSQLiteOpenHelper(context: Context) : SQLiteOpenHelper(
         newCar.put("model", car.model)
         newCar.put("color", car.color)
         newCar.put("year", car.year)
-        val id = this.readableDatabase.insert("cars", null, newCar)
+        val id = readableDatabase.insert("cars", null, newCar)
         Log.d("MyLog", "$id")
     }
 
@@ -65,12 +69,12 @@ class CarSQLiteOpenHelper(context: Context) : SQLiteOpenHelper(
         newCar.put("color", car.color)
         newCar.put("year", car.year)
         val where = "id=${car.id}"
-        this.readableDatabase.update("cars", newCar, where, null)
+        readableDatabase.update("cars", newCar, where, null)
     }
 
     suspend fun deleteCar(car: Car) {
         val where = "id=${car.id}"
-        this.readableDatabase.delete("cars", where, null)
+        readableDatabase.delete("cars", where, null)
     }
 
 }

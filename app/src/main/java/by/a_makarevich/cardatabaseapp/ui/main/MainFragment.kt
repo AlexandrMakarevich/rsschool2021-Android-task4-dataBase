@@ -23,9 +23,9 @@ import kotlinx.coroutines.flow.onEach
 class MainFragment(private val listener: CarClickedListener) : Fragment(),
     CarViewHolder.CarViewListener {
 
-    /*companion object {
-        fun newInstance() = MainFragment
-    }*/
+    companion object {
+        fun newInstance(listener: CarClickedListener) = MainFragment(listener)
+    }
 
     private var cars = listOf<Car>()
 
