@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), Router, CarClickedListener {
                 .getString(resources.getString(R.string.data_source), "ROOM")
         }"
         invalidateOptionsMenu()
-        openFragment(MainFragment.newInstance(this))
+        openFragment(MainFragment.newInstance())
     }
 
     override fun openAddFragment(id: Int, model: String, color: String, year: String) {
@@ -103,7 +103,6 @@ class MainActivity : AppCompatActivity(), Router, CarClickedListener {
         }
         return super.onOptionsItemSelected(item)
     }
-
 }
 
 sealed class RunningFragment {

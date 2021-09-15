@@ -1,5 +1,6 @@
 package by.a_makarevich.cardatabaseapp.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,13 +20,16 @@ import by.a_makarevich.cardatabaseapp.ui.main.adapter.CarViewHolder
 import by.a_makarevich.cardatabaseapp.ui.main.adapter.SwipeHelper
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.lang.ClassCastException
 
-class MainFragment(private val listener: CarClickedListener) : Fragment(),
+class MainFragment : Fragment(),
     CarViewHolder.CarViewListener {
 
     companion object {
-        fun newInstance(listener: CarClickedListener) = MainFragment(listener)
+        fun newInstance() = MainFragment()
     }
+
+    private var listener: CarClickedListener? = null
 
     private var cars = listOf<Car>()
 
@@ -63,7 +67,8 @@ class MainFragment(private val listener: CarClickedListener) : Fragment(),
                 viewModel.cars.onEach(::renderCars).launchIn(lifecycleScope)
             }
             resources.getStringArray(R.array.data_source)[1] -> {         //SQLite
-                viewModel.getCarsCursor(requireContext()).onEach(::renderCars).launchIn(lifecycleScope)
+                viewModel.getCarsCursor(requireContext()).onEach(::renderCars)
+                    .launchIn(lifecycleScope)
             }
         }
 
@@ -108,7 +113,7 @@ class MainFragment(private val listener: CarClickedListener) : Fragment(),
         this.cars.forEach { Log.d("MyLog", it.model) }
         val car = this.cars.findLast { it.id == _id }
         if (car != null) {
-            listener.onCarClicked(car)
+            listener?.onCarClicked(car)
         } else return
     }
 
@@ -127,11 +132,23 @@ class MainFragment(private val listener: CarClickedListener) : Fragment(),
             }
         }
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+
+
+        if (activity is CarClickedListener) {
+            listener = activity as CarClickedListener
+        } else {
+             ClassCastException(
+                activity.toString()
+                        + " must implemenet MainFragment.CarClickedListener"
+            )
+        }
+    }
 }
 
 interface CarClickedListener {
     fun onCarClicked(car: Car)
 }
-
-
-
